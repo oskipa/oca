@@ -9,8 +9,8 @@ defmodule Oca.Player do
   ## Examples
 
       iex> %Oca.Player{}
-      %Oca.Player{money: 100, name: []}
+      %Oca.Player{money: 100, name: ""}
 
   """
-  defstruct name: '', money: 100
+  defstruct name: "", money: 100
 end
