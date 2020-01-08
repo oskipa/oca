@@ -8,5 +8,6 @@ defmodule Oca.SpaceTest do
     assert Map.has_key?(space, :name)
     assert Map.has_key?(space, :player)
     assert Map.has_key?(space, :event)
+    assert Map.has_key?(space, :number)
   end
 end
