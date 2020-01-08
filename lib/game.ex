@@ -17,11 +17,32 @@ defmodule Oca.Game do
   """
   defstruct players: [], 
     current_player: 0, 
-    active: false, 
+    active: false,
+    turn_number: 1,
     board: %Oca.Board{}
 
+  @doc """
+  Starts the game
 
-  def hello do
-    "world" 
+  Returns %Oca.Game{}
+
+  ## Notes
+  
+  ## Examples
+     
+      iex> game = %Oca.Game{}
+      iex> game.active
+      false
+      iex> game = Oca.Game.start(game)
+      iex> game.active
+      true
+
+  """
+  def start(game) do
+    %{game | active: true}
+  end
+
+  def turn(game) do
+    game
   end
 end
