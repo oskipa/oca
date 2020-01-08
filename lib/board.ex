@@ -72,7 +72,7 @@ defmodule Oca.Board do
       %Oca.Space{number: 55, name: "", player: nil, event: {} },
       %Oca.Space{number: 56, name: "", player: nil, event: {} },
       %Oca.Space{number: 57, name: "", player: nil, event: {} },
-      %Oca.Space{number: 58, name: "You died. Start over.", player: nil, event: {} },
+      %Oca.Space{number: 58, name: "You died. Start over.", player: nil, event: {:goto, 1} },
       %Oca.Space{number: 59, name: "Goose", player: nil, event: {:goose} },
       %Oca.Space{number: 60, name: "", player: nil, event: {} },
       %Oca.Space{number: 61, name: "", player: nil, event: {} },

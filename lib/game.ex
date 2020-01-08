@@ -20,4 +20,8 @@ defmodule Oca.Game do
     active: false, 
     board: %Oca.Board{}
 
+
+  def hello do
+    "world" 
+  end
 end
