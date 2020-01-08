@@ -10,5 +10,5 @@ defmodule Oca.Space do
   The space is at the heart of the Game of the Goose. It often has a name, and it can have a special event if you land on it.
 
   """
-  defstruct number: 1, name: "", player: "", event: {:description, :action}
+  defstruct number: 1, name: "", player: "", event: {:action}
 end
