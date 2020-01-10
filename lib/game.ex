@@ -27,22 +27,42 @@ defmodule Oca.Game do
   Returns %Oca.Game{}
 
   ## Notes
-  
+  It has to have at least two players to play 
   ## Examples
      
       iex> game = %Oca.Game{}
       iex> game.active
       false
+      iex> game = %{game | players: [%Oca.Player{}, %Oca.Player{}] }
       iex> game = Oca.Game.start(game)
       iex> game.active
       true
 
   """
   def start(game) do
-    %{game | active: true}
+    cond do
+      Enum.count(game.players) > 1 ->
+        %{game | active: true}
+      true ->
+      game
+    end
   end
 
-  def turn(game) do
+  @doc """
+  Executes a turn for a player
+
+  Returns %Oca.Game{}
+
+  ## Examples
+
+       turn_0 =  %Oca.Game{}
+       turn_1 = Oca.Game(turn_0)
+  """
+  def turn(game)  do
+    if  game.active do
+      
+    end
+
     game
   end
 end

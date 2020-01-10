@@ -20,11 +20,29 @@ defmodule Oca.GameTest do
     assert after_turn.active == false
   end
 
-  test "make the game active" do
+  test "make active only if it has players" do
+    game = %Oca.Game{}
+    game = Oca.Game.start(game)
+    assert game.active == false
+
+    game = %{game | players: [ %Oca.Player{}, %Oca.Player{}]}
+   
+    game = Oca.Game.start(game)
+    assert game.active == true
+  end
+
+
+   test "make the game active" do
     game = %Oca.Game{}
     assert game.active == false
+
+    game = %{game | players: [%Oca.Player{}, %Oca.Player{}]}
 
     game = Oca.Game.start(game)
     assert game.active == true
   end
+
+  test "gam" do
+  end
+  
 end
