@@ -2,6 +2,18 @@ defmodule Oca.GameTest do
   use ExUnit.Case
   doctest Oca.Game
 
+  setup do
+    {:ok,   
+      %{start:  %Oca.Game{
+                active: true, 
+                players: [
+                  %Oca.Player{name: "thing one"}, 
+                  %Oca.Player{name: "thing two"}]
+                }
+      }
+    }
+  end
+
   test "creates a game struct" do
     game = %Oca.Game{}
     assert Map.has_key?(game, :players) 
@@ -31,7 +43,6 @@ defmodule Oca.GameTest do
     assert game.active == true
   end
 
-
    test "make the game active" do
     game = %Oca.Game{}
     assert game.active == false
@@ -45,15 +56,19 @@ defmodule Oca.GameTest do
   test "turn does nothing when the game is not active" do
     start = %Oca.Game{}
     game = Oca.Game.turn(start)
-
     assert start == game
   end
 
-  test "turn increments turn number" do
-    start = %Oca.Game{active: true}
+  test "turn increments turn number", context do
+    start = context[:start]
     turn_1 = Oca.Game.turn(start)
-
     assert turn_1.turn_number == 2
+  end
+
+  test "turn updates current player", context do
+    start = context[:start]
+    turn_1 = Oca.Game.turn(start)
+    assert turn_1.current_player == 1
   end
   
 end

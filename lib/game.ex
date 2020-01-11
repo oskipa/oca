@@ -61,8 +61,20 @@ defmodule Oca.Game do
   def turn(game)  do
     case  game.active do
       false -> game
-      true ->  
-        %{game | turn_number: game.turn_number + 1 }
+      true -> 
+        game 
+        |> next_player
+        |> increment_turn
     end
+  end
+
+  defp next_player(game) do
+    %{ game | current_player: 
+      rem((game.current_player + 1), 
+           Enum.count(game.players)) }
+  end
+
+  defp increment_turn(game) do
+    %{game | turn_number: game.turn_number + 1 }
   end
 end
