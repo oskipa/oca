@@ -42,10 +42,28 @@ defmodule Oca.Game do
   def start(game) do
     cond do
       Enum.count(game.players) > 1 ->
-        %{game | active: true}
+        game
+        |> place_players_in_start
+        |> turn_game_active
       true ->
       game
     end
+  end
+
+  defp place_players_in_start(game) do
+    positions =  %{}
+
+    positions = 
+      game.players
+      |> Enum.into(%{}, 
+        fn player -> {player.name, 1} end) 
+
+    %{game | board: 
+      %{game.board | player_positions: positions }}
+  end
+
+  defp turn_game_active(game) do
+    %{game | active: true}
   end
 
   @doc """
@@ -63,9 +81,19 @@ defmodule Oca.Game do
       false -> game
       true -> 
         game 
+        |> roll
+        |> move
         |> next_player
         |> increment_turn
     end
+  end
+
+  defp roll(game) do
+    {game, Oca.Dice.roll()}
+  end
+
+  defp move({game, roll}) do
+    game
   end
 
   defp next_player(game) do
