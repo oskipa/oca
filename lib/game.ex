@@ -59,10 +59,10 @@ defmodule Oca.Game do
        turn_1 = Oca.Game(turn_0)
   """
   def turn(game)  do
-    if  game.active do
-      
+    case  game.active do
+      false -> game
+      true ->  
+        %{game | turn_number: game.turn_number + 1 }
     end
-
-    game
   end
 end

@@ -42,7 +42,18 @@ defmodule Oca.GameTest do
     assert game.active == true
   end
 
-  test "gam" do
+  test "turn does nothing when the game is not active" do
+    start = %Oca.Game{}
+    game = Oca.Game.turn(start)
+
+    assert start == game
+  end
+
+  test "turn increments turn number" do
+    start = %Oca.Game{active: true}
+    turn_1 = Oca.Game.turn(start)
+
+    assert turn_1.turn_number == 2
   end
   
 end
