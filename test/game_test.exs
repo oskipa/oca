@@ -2,16 +2,15 @@ defmodule Oca.GameTest do
   use ExUnit.Case
   doctest Oca.Game
 
-  setup do
-    {:ok,   
-      %{start:  %Oca.Game{
-                active: true, 
-                players: [
-                  %Oca.Player{name: "thing one"}, 
-                  %Oca.Player{name: "thing two"}]
-                }
-      }
-    }
+  setup_all do
+    zero = %Oca.Game{ 
+      players: [
+        %Oca.Player{name: "thing one"}, 
+        %Oca.Player{name: "thing two"}] }
+
+    game = Oca.Game.start(zero)
+
+    {:ok, %{start: game}}
   end
 
   test "creates a game struct" do
