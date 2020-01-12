@@ -22,6 +22,25 @@ defmodule Oca.Game do
     board: %Oca.Board{}
 
   @doc """
+  Location of player
+
+  ## Parameters
+  game, %Oca.Game{}, current game state
+  player_name, String, name of player
+
+  Returns Integer, position of player
+
+  ## Examples
+      
+        Oca.Game.position_of("playerr one") 
+        1
+
+  """
+  def position_of(game, player_name) do
+    Map.get(game.board.player_positions, player_name)
+  end
+
+  @doc """
   Starts the game
 
   Returns %Oca.Game{}
@@ -92,8 +111,13 @@ defmodule Oca.Game do
     {game, Oca.Dice.roll()}
   end
 
-  defp move({game, roll}) do
-    game
+  defp move({game, {d1, d2}}) do
+    player = Enum.at(game.players, game.current_player)
+    position = position_of(game, player.name) + (d1 + d2) 
+
+    positions = %{ game.board.player_positions | player.name => position }
+
+   %{game | board: %{game.board | player_positions: positions}}
   end
 
   defp next_player(game) do

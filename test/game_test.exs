@@ -59,34 +59,35 @@ defmodule Oca.GameTest do
     game = %{game | players: [%Oca.Player{name: "thing one"}, %Oca.Player{name: "thing two"}]}
 
     game = Oca.Game.start(game)
-    assert Map.get(game.board.player_positions, "thing one" )  == 1
+    assert Oca.Game.position_of(game, "thing one" )  == 1
   end
 
   test "turn does nothing when the game is not active" do
     start = %Oca.Game{}
     game = Oca.Game.turn(start)
+
     assert start == game
   end
 
   test "turn increments turn number", context do
     start = context[:start]
     turn_1 = Oca.Game.turn(start)
+
     assert turn_1.turn_number == 2
   end
 
   test "turn updates current player", context do
     start = context[:start]
     turn_1 = Oca.Game.turn(start)
+
     assert turn_1.current_player == 1
   end
  
-  test "players start a 1", context do
+  test "it moves the player", context do
     start = context[:start]
-    # assert start.players[]
+    turn_1 = Oca.Game.turn(start)
+
+    assert Oca.Game.position_of(turn_1, "thing one") != 1
   end
-  
-  # test "it moves the player", context do
-  #  start = context[:start]
-  # end
   
 end
