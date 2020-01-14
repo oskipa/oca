@@ -101,7 +101,7 @@ defmodule Oca.Game do
       true -> 
         game 
         |> roll
-        |> move
+        |> play
         |> next_player
         |> increment_turn
     end
@@ -111,13 +111,53 @@ defmodule Oca.Game do
     {game, Oca.Dice.roll()}
   end
 
-  defp move({game, {d1, d2}}) do
+  defp play({game, dice}) do
     player = Enum.at(game.players, game.current_player)
-    position = position_of(game, player.name) + (d1 + d2) 
 
+    case  position_of(game, player.name) do
+      1  -> 
+        initial_roll(game, player, dice)
+      _ -> 
+        advance(game, player, dice) 
+    end
+  end
+
+  defp initial_roll(game, player, dice) do
+    case dice do
+      {6, 3} -> goto(game, player, 26)
+      {3, 6} -> goto(game, player, 26)
+      {5, 4} -> goto(game, player, 53)
+      {4, 5} -> goto(game, player, 53)
+      {_, _} -> advance(game, player, dice)
+    end
+  end
+
+  defp goto(game, player, position) do
     positions = %{ game.board.player_positions | player.name => position }
+    
+    %{game | board: %{game.board | player_positions: positions}}
+  end
 
-   %{game | board: %{game.board | player_positions: positions}}
+  @doc """
+  Enforces the rules
+
+  Return %Oca.Game{}
+  
+  ## Params
+    - game, %Oca.Game{}, the game state
+    - player, %Oca.Player{}, the current player
+    - dice, {Integer, Integer}, the dice roll values
+
+  ## Notes
+  This function implements the game rules as part of the movement. It creates a search graph until we reach a square with no move  event.
+  """
+  defp advance(game, player, {d1, d2}) do
+    forward = d1 + d2
+    new_position  = position_of(game, player.name) + forward
+
+    case Oca.Board.square_event(game.board, new_position) do
+      _ -> goto(game, player, new_position) 
+    end 
   end
 
   defp next_player(game) do
