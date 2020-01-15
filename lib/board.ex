@@ -11,11 +11,12 @@ defmodule Oca.Board do
 
   """
   defstruct pot: 0,
+    space_limit: 63,
     player_positions: %{},
     event_spaces: %{ 
-      5 => {"Goose", {:goose}},
-      6 => {"Bridge", {:goto, 12}},
-      9 => {"Goose", {:goose}},
+      5  => {"Goose", {:goose}},
+      6  => {"Bridge", {:goto, 12}},
+      9  => {"Goose", {:goose}},
       14 => {"Goose", {:goose}},
       18 => {"Goose", {:goose}},
       19 => {"Inn", {:lose_turn, 1}},
@@ -37,6 +38,17 @@ defmodule Oca.Board do
       63 => {"Goal", {:win}}
     }
 
+  @doc """
+  Retrieves event tuple for square
+  
+  Returns {"Name", {:event, Integer}}
+
+  ## Examples
+  
+        iex>Oca.Board.square_event(%Oca.Board{}, 59) 
+        {"Goose", {:goose}}
+
+  """
   def square_event(board, position) do
     case Map.fetch(board.event_spaces, position) do
     {:ok, value} -> value
