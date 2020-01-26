@@ -13,10 +13,10 @@ defmodule Oca.Game do
 
   ## Examples
        %Oca.Game{}
-       %Oca.Game{ players: [], current_player: 0, board: %Oca.Board{...}}
+       %Oca.Game{ players: [], current_player_index: 0, board: %Oca.Board{...}}
   """
   defstruct players: [], 
-    current_player: 0, 
+    current_player_index: 0, 
     active: false,
     turn_number: 1,
     board: %Oca.Board{}
@@ -32,12 +32,26 @@ defmodule Oca.Game do
 
   ## Examples
       
-        Oca.Game.position_of("playerr one") 
+        Oca.Game.position_of("player one") 
         1
 
   """
   def position_of(game, player_name) do
     Map.get(game.board.player_positions, player_name)
+  end
+
+  @doc """
+  Returns the current player struct
+
+  ## Params
+  - game,  Oca.Game{}, the game state
+
+  ## Returns
+  Oca.Player{}, the current player
+
+  """
+  def current_player(game) do
+    Enum.at(game.players, game.current_player_index)
   end
 
   @doc """
@@ -112,7 +126,7 @@ defmodule Oca.Game do
   end
 
   defp play({game, dice}) do
-    player = Enum.at(game.players, game.current_player)
+    player = current_player(game)
 
     case  position_of(game, player.name) do
       1  -> 
@@ -134,8 +148,13 @@ defmodule Oca.Game do
 
   defp goto(game, player, position) do
     positions = %{ game.board.player_positions | player.name => position }
-    
+    # implement this tomorrow
+    # game = update_player(game, player) 
     %{game | board: %{game.board | player_positions: positions}}
+  end
+
+  defp update_player(game, player) do
+    
   end
 
   @doc """
@@ -156,13 +175,21 @@ defmodule Oca.Game do
     new_position  = position_of(game, player.name) + forward
 
     case Oca.Board.square_event(game.board, new_position) do
-      _ -> goto(game, player, new_position) 
+      {_,  {:lose_turn, turns}} ->
+        goto(game, Oca.Player.set_lost_turns(player, turns), new_position) 
+      {_, {:goose}}       -> 
+        goto(game, player, new_position) 
+        advance(game, player, {d1, d2}) 
+      {_, {:goto, space}} -> 
+        goto(game, player, space) 
+       _                  -> 
+        goto(game, player, new_position) 
     end 
   end
 
   defp next_player(game) do
-    %{ game | current_player: 
-      rem((game.current_player + 1), 
+    %{ game | current_player_index: 
+      rem((game.current_player_index + 1), 
            Enum.count(game.players)) }
   end
 

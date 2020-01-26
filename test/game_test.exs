@@ -17,7 +17,7 @@ defmodule Oca.GameTest do
     game = %Oca.Game{}
     assert Map.has_key?(game, :players) 
     assert Map.has_key?(game, :board) 
-    assert Map.has_key?(game, :current_player) 
+    assert Map.has_key?(game, :current_player_index) 
     assert Map.has_key?(game, :active) 
     assert Map.has_key?(game, :turn_number) 
   end 
@@ -62,6 +62,14 @@ defmodule Oca.GameTest do
     assert Oca.Game.position_of(game, "thing one" )  == 1
   end
 
+  test "current_player gets player struct", context do
+    start = context[:start]
+    game = Oca.Game.start(start)
+    player = Oca.Game.current_player(game)
+
+    assert player.__struct__  == Oca.Player
+  end
+
   describe "turn" do
     test "does nothing when the game is not active" do
       start = %Oca.Game{}
@@ -81,16 +89,9 @@ defmodule Oca.GameTest do
       start = context[:start]
       turn_1 = Oca.Game.turn(start)
 
-      assert turn_1.current_player == 1
+      assert turn_1.current_player_index == 1
     end
    
-    test "it moves the player", context do
-      start = context[:start]
-      turn_1 = Oca.Game.turn(start)
-
-      assert Oca.Game.position_of(turn_1, "thing one") != 1
-    end
-
   end
 
 end
