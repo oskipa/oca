@@ -70,6 +70,18 @@ defmodule Oca.GameTest do
     assert player.__struct__  == Oca.Player
   end
 
+  describe "setters" do
+
+    test "Set player position", context do
+      start = context[:start]
+      player = Oca.Game.current_player(start)
+      turn_1 = Oca.Game.set_position(start, player, 3)
+
+      assert Oca.Game.position_of(turn_1, "thing one") == 3
+    end
+
+  end
+
   describe "turn" do
     test "does nothing when the game is not active" do
       start = %Oca.Game{}

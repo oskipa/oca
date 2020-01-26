@@ -55,6 +55,22 @@ defmodule Oca.Game do
   end
 
   @doc """
+  Sets the position of a player on the board
+  ## Params
+  - game, %Oca.Game{}, game state
+  - player, %Player.{}, the current player
+  - position, Integer, the space to move the player
+  
+  ## Returns
+  - %Oca.Game{}, updated game state
+  """
+  def set_position(game, player, position) do
+    positions = %{ game.board.player_positions | player.name => position }
+    
+    %{game | board: %{game.board | player_positions: positions}}
+  end
+
+  @doc """
   Starts the game
 
   Returns %Oca.Game{}
