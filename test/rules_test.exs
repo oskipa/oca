@@ -22,7 +22,7 @@ defmodule Oca.RulesTest do
       player = Oca.Game.current_player(start)
       turn_1 = Oca.Rules.goto(start, player, 3)
 
-    #  assert Oca.Game.position_of(turn_1, "thing one") == 3
+      assert Oca.Game.position_of(turn_1, "thing one") == 3
     end
 
 
